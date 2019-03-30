@@ -1,6 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+"""
+Usage:
+    vocab.py --train-src=<file> --train-tgt=<file> [options] VOCAB_FILE
+
+Options:
+    -h --help                  Show this screen.
+    --train-src=<file>         File of training source sentences
+    --train-tgt=<file>         File of training target sentences
+    --size=<int>               vocab size [default: 50000]
+    --freq-cutoff=<int>        frequency cutoff [default: 2]
+"""
+
 from collections import Counter
 from docopt import docopt
 from itertools import chain
@@ -14,8 +26,7 @@ from utils import read_corpus, pad_sents
 
 
 class VocabEntry(object):
-    """ Vocabulary Entry, i.e. structure containing either
-    src or tgt language terms.
+    """ Vocabulary Entry
     """
 
     def __init__(self, word2id=None):
@@ -34,7 +45,7 @@ class VocabEntry(object):
         self.id2word = {v: k for k, v in self.word2id.items()}
 
     def __getitem__(self, word):
-        """ Retrieve word's index. Return the index for the unk
+        """ Retrieve word's index.
         token if the word is out of vocabulary.
         @param word (str): word to look up.
         @returns index (int): index of word 
@@ -85,8 +96,7 @@ class VocabEntry(object):
             return self[word]
 
     def words2indices(self, sents):
-        """ Convert list of words or list of sentences of words
-        into list or list of list of indices.
+        """
         @param sents (list[str] or list[list[str]]): sentence(s) in words
         @return word_ids (list[int] or list[list[int]]): sentence(s) in indices
         """
@@ -96,7 +106,7 @@ class VocabEntry(object):
             return [self[w] for w in sents]
 
     def indices2words(self, word_ids):
-        """ Convert list of indices into words.
+        """
         @param word_ids (list[int]): list of word ids
         @return sents (list[str]): list of words
         """
